@@ -38,7 +38,7 @@ ENV MYSQL_PASS test123
 RUN echo "mysql-server mysql-server/root_password password root" | debconf-set-selections
 RUN echo "mysql-server mysql-server/root_password_again password root" | debconf-set-selections
 
-RUN apt-get install -y mysql-server
+RUN apt-get install -y mysql-server-5.7
 
 #RUN rm -rf /var/lib/mysql/*
 
