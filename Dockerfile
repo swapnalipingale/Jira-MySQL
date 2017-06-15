@@ -25,10 +25,7 @@ COPY "docker-entrypoint.sh" "/"
 ENTRYPOINT ["/docker-entrypoint.sh"]
 RUN chmod +x /docker-entrypoint.sh
 
-EXPOSE 8080
 EXPOSE 8085
-EXPOSE 9090
-EXPOSE 8015
 
 #CMD ["/sbin/my_init"]
 
