@@ -29,7 +29,8 @@ if [ ! -d /var/lib/mysql/mysql ]; then
     if [ -d /root/setup ]; then
         for sql in $(ls /root/setup/*.sql 2>/dev/null | sort); do
             echo '*** Running script:' $sql
-            mysql -uroot -proot -e "\. $sql"
+            mysql -uroot -proot -e "test.sql"
+            mysql -uroot -proot -e "Jiradb.sql"
         done
     else
         echo '*** Directory /root/setup does not exist'
