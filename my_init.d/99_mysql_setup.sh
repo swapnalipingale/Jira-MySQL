@@ -24,12 +24,14 @@ if [ ! -d /var/lib/mysql/mysql ]; then
     echo "*** Creating mysql user: $MYSQL_USER with pass: $MYSQL_PASS"
     mysql -uroot -proot -e "CREATE USER '${MYSQL_USER}'localhost'%' IDENTIFIED BY '${MYSQL_PASS}';"
     mysql -uroot -proot -e "GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_USER}'@'localhost' WITH GRANT OPTION; FLUSH PRIVILEGES;"
-
+    mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS Jiradb DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;"
+    
+    
     echo '*** Bootstrapping database with scripts found in /root/setup'
     if [ -d /root/setup ]; then
         for sql in $(ls /root/setup/*.sql 2>/dev/null | sort); do
             echo '*** Running script:' $sql
-            mysql -uroot -proot -e "/root/setup/test.sql"
+            #mysql -uroot -proot -e "/root/setup/test.sql"
             mysql -uroot -proot -e "/root/setup/Jiradb.sql"
         done
     else
