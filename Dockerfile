@@ -31,7 +31,7 @@ EXPOSE 9090
 EXPOSE 8015
 
 #CMD ["/sbin/my_init"]
-FROM Mysql
+
 
 ENV MYSQL_USER root
 ENV MYSQL_PASS root
