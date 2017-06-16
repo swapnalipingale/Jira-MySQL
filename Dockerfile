@@ -47,7 +47,6 @@ RUN apt-get install -y mysql-server
     while [ ! -x /var/run/mysqld/mysqld.sock ]; do
         sleep 1
     done
-    
 #RUN rm -rf /var/lib/mysql/*
 
      echo '*** Setting root password to root'
