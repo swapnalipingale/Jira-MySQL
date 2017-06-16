@@ -29,7 +29,6 @@ EXPOSE 8085
 
 #CMD ["/sbin/my_init"]
 
-
 ENV MYSQL_USER root
 ENV MYSQL_PASS root
 ENV MYSQL_DATABASE Jiradb
@@ -52,7 +51,6 @@ RUN apt-get install -y mysql-server
 
      echo '*** Setting root password to root'
     /usr/bin/mysqladmin -u root password 'root'
-
 
 ADD ["build/my.cnf" , "/etc/mysql/my.cnf"]
 ADD ["build/dbconfig.xml" , "/var/atlassian/application-data/jira"]
