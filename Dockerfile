@@ -1,4 +1,5 @@
 FROM openjdk:8
+MAINTAINER Swapnali Pingale <yeole.swapnali@gmail.com>
 
 ENV JIRA_HOME     /var/atlassian/application-data/jira
 ENV JIRA_INSTALL  /opt/atlassian/jira
