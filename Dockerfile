@@ -76,7 +76,6 @@ ADD ["build/Setup" , "/root/setup"]
 #RUN chmod +x /etc/Jiradb.sql
 
 EXPOSE 3306
-
 #RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 CMD ["/usr/bin/mysqld_safe"]
