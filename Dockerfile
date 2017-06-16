@@ -32,13 +32,27 @@ EXPOSE 8085
 
 ENV MYSQL_USER root
 ENV MYSQL_PASS root
+ENV MYSQL_DATABASE Jiradb
 
 RUN echo "mysql-server mysql-server/root_password password root" | debconf-set-selections
 RUN echo "mysql-server mysql-server/root_password_again password root" | debconf-set-selections
 
 RUN apt-get install -y mysql-server
 
+    echo '*** Starting mysqld'
+    # The sleep 1 is there to make sure that inotifywait starts up before the socket is created
+    mysqld_safe &
+    chown -R mysql /var/run/mysqld/
+    echo '*** Waiting for mysqld to come online'
+    while [ ! -x /var/run/mysqld/mysqld.sock ]; do
+        sleep 1
+    done
+    
 #RUN rm -rf /var/lib/mysql/*
+
+     echo '*** Setting root password to root'
+    /usr/bin/mysqladmin -u root password 'root'
+
 
 ADD ["build/my.cnf" , "/etc/mysql/my.cnf"]
 ADD ["build/dbconfig.xml" , "/var/atlassian/application-data/jira"]
@@ -49,8 +63,19 @@ RUN chmod +x /etc/mysql/run
 
 ADD ["build/Setup" , "/root/setup"]
 
-ADD ["my_init.d/99_mysql_setup.sh" , "/etc/my_init.d/99_mysql_setup.sh"]
-RUN chmod +x /etc/my_init.d/99_mysql_setup.sh
+    
+    
+    
+    mysql -e "CREATE DATABASE IF NOT EXISTS Jiradb DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;"
+    mysql -e "use Jiradb;"
+    
+    mysql -uroot -proot -e "CREATE USER '${MYSQL_USER}'localhost'%' IDENTIFIED BY '${MYSQL_PASS}';"
+    mysql -uroot -proot -e "GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_USER}'@'localhost' WITH GRANT OPTION; FLUSH PRIVILEGES;"
+    
+    RUN "mysql -u $MYSQL_USER -p $MYSQL_PASSWORD $MYSQL_DATABASE < /root/setup/Jiradb.sql"
+
+#ADD ["my_init.d/99_mysql_setup.sh" , "/etc/my_init.d/99_mysql_setup.sh"]
+#RUN chmod +x /etc/my_init.d/99_mysql_setup.sh
 #ADD ["/root/setup/Jiradb.sql" , "/etc/Jiradb.sql"]
 #RUN chmod +x /etc/Jiradb.sql
 
