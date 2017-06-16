@@ -62,12 +62,9 @@ ADD ["runit/mysql.sh" , "/etc/mysql/run"]
 RUN chmod +x /etc/mysql/run
 
 ADD ["build/Setup" , "/root/setup"]
-
-    
-    
-    
+ 
     mysql -e "CREATE DATABASE IF NOT EXISTS Jiradb DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;"
-    mysql -e "use Jiradb;"
+    mysql "use Jiradb;"
     
     mysql -uroot -proot -e "CREATE USER '${MYSQL_USER}'localhost'%' IDENTIFIED BY '${MYSQL_PASS}';"
     mysql -uroot -proot -e "GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_USER}'@'localhost' WITH GRANT OPTION; FLUSH PRIVILEGES;"
